@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "socket_bin",
+    "socket_lib",
+    "thermo_bin",
+    "thermo_lib",
+]
