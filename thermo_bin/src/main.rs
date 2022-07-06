@@ -5,8 +5,8 @@ use std::{
 };
 
 fn main() {
-    let mut args = std::env::args();
-    args.next().unwrap();
+    let args = std::env::args();
+    let mut args = args.skip(1);
 
     let receiver = args
         .next()

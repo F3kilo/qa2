@@ -6,6 +6,7 @@ use std::{
         Arc, Mutex,
     },
     thread,
+    time::Duration,
 };
 
 pub struct SmartThermo {
@@ -16,6 +17,8 @@ pub struct SmartThermo {
 impl SmartThermo {
     pub fn new(address: impl ToSocketAddrs) -> Result<Self, Box<dyn Error>> {
         let socket = UdpSocket::bind(address)?;
+        socket.set_read_timeout(Some(Duration::from_secs(1)))?;
+
         let finished = Arc::new(AtomicBool::new(false));
         let temperature = Arc::new(Temperature::default());
 
@@ -30,6 +33,7 @@ impl SmartThermo {
             if let Err(err) = socket.recv_from(&mut buf) {
                 println!("can't receive datagram: {err}");
             }
+
             let val = f32::from_be_bytes(buf);
             temperature_clone.set(val);
         });
