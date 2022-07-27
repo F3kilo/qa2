@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "socket_bin",
+    "socket_bin_async",
     "socket_lib",
     "thermo_bin",
     "thermo_lib",
