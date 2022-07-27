@@ -18,11 +18,13 @@ async fn main() {
             }
         };
 
+        println!("------------------");
         println!("Response: {response}");
     }
 }
 
 fn show_menu() {
+    println!();
     println!("------------------");
     println!("Select action:");
     println!("1) turn off");
