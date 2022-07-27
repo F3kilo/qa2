@@ -3,6 +3,7 @@ members = [
     "socket_bin",
     "socket_bin_async",
     "socket_lib",
+    "socket_lib_async",
     "thermo_bin",
     "thermo_lib",
 ]

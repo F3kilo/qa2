@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 socket_lib = { path = "../socket_lib" }
-tokio = { version = "1.19.2", features = ["net", "macros", "rt-multi-thread", "fs", "io-util"] }
+tokio = { version = "1.19.2", features = ["net", "macros", "rt-multi-thread", "io-util", "sync"] }

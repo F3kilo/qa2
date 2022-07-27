@@ -8,9 +8,7 @@ fn main() {
     let args = std::env::args();
     let mut args = args.skip(1);
 
-    let receiver = args
-        .next()
-        .unwrap_or_else(|| "127.0.0.1:4321".into());
+    let receiver = args.next().unwrap_or_else(|| "127.0.0.1:4321".into());
 
     println!("Receiver address from args: {receiver}");
 

@@ -1,5 +1,11 @@
+use std::sync::Arc;
+
 use socket_lib::{Command, Response};
-use tokio::{net::TcpListener, io::{AsyncReadExt, AsyncWriteExt}};
+use tokio::{
+    io::{AsyncReadExt, AsyncWriteExt},
+    net::TcpListener,
+    sync::Mutex,
+};
 
 #[tokio::main]
 async fn main() {
@@ -8,24 +14,32 @@ async fn main() {
 
     let server_address = args.next().unwrap_or_else(|| "127.0.0.1:7890".into());
 
-    let listener = TcpListener::bind(server_address).await.expect("can't bind tcp listener");
+    let listener = TcpListener::bind(server_address)
+        .await
+        .expect("can't bind tcp listener");
 
-    let mut smart_socket = SmartSocket::default();
+    let smart_socket = Arc::new(Mutex::new(SmartSocket::default()));
 
     while let Ok((mut stream, addr)) = listener.accept().await {
         let peer = addr.to_string();
         println!("Peer '{peer}' connected");
 
-        let mut in_buffer = [0u8];
-        while stream.read_exact(&mut in_buffer).await.is_ok() {
-            let response = smart_socket.process_command(in_buffer[0].into());
-            let response_buf: [u8; 5] = response.into();
-            if stream.write_all(&response_buf).await.is_err() {
-                break;
-            };
-        }
+        let smart_socket = smart_socket.clone();
+        tokio::spawn(async move {
+            let mut in_buffer = [0u8];
+            while stream.read_exact(&mut in_buffer).await.is_ok() {
+                let response = smart_socket
+                    .lock()
+                    .await
+                    .process_command(in_buffer[0].into());
+                let response_buf: [u8; 5] = response.into();
+                if stream.write_all(&response_buf).await.is_err() {
+                    break;
+                };
+            }
 
-        println!("Connection with {peer} lost. Waiting for new connections...");
+            println!("Connection with {peer} lost. Waiting for new connections...");
+        });
     }
 }
 
