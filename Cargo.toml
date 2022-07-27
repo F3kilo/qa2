@@ -7,4 +7,5 @@ members = [
     "thermo_bin",
     "thermo_bin_async",
     "thermo_lib",
+    "thermo_lib_async",
 ]
