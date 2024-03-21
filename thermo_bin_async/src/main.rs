@@ -31,7 +31,7 @@ async fn main() {
             println!("can't send temperature: {err}")
         }
 
-        let duration = Duration::from_secs(1);
+        let duration = Duration::from_secs_f32(0.5);
         time::sleep(duration).await;
     }
 }

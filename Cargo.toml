@@ -10,3 +10,5 @@ members = [
     "thermo_lib_async",
     "stream_example",
 ]
+
+resolver = "2"
