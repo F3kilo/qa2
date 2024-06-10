@@ -8,7 +8,6 @@ members = [
     "thermo_bin_async",
     "thermo_lib",
     "thermo_lib_async",
-    "stream_example",
 ]
 
 resolver = "2"
